@@ -1,0 +1,19 @@
+RewriteEngine On
+
+# Nếu request đến tệp hoặc thư mục thật, không áp dụng các quy tắc khác
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Chuyển yêu cầu đến auth.php với tham số
+RewriteRule ^api/auth/([^/]+)/?$ api/auth.php?action=$1 [L,QSA]
+
+# Chuyển yêu cầu đến các file khác
+RewriteRule ^api/([^/]+)/?$ api/$1.php [L,QSA]
+
+# CORS headers
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+</IfModule> 
